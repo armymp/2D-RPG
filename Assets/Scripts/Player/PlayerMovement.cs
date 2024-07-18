@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
 
     private readonly int _moveX = Animator.StringToHash("MoveX");
     private readonly int _moveY = Animator.StringToHash("MoveY");
+    private readonly int _moving = Animator.StringToHash("IsMoving");
     private PlayerActions _actions;
     private Rigidbody2D _rb2D;
     private Animator _animator;
@@ -39,7 +40,13 @@ public class PlayerMovement : MonoBehaviour
     private void ReadMovement()
     {
         _moveDirection = _actions.Movement.Move.ReadValue<Vector2>().normalized;
-        if (_moveDirection == Vector2.zero) return;
+        if (_moveDirection == Vector2.zero)
+        {
+            _animator.SetBool(_moving, false);
+            return;
+        }
+        
+        _animator.SetBool(_moving, true);
         _animator.SetFloat(_moveX, _moveDirection.x);
         _animator.SetFloat(_moveY, _moveDirection.y);
     }
