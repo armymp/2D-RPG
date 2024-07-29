@@ -8,18 +8,17 @@ public class PlayerMovement : MonoBehaviour
     [Header("Config")]
     [SerializeField] private float speed;
 
-    private readonly int _moveX = Animator.StringToHash("MoveX");
-    private readonly int _moveY = Animator.StringToHash("MoveY");
-    private readonly int _moving = Animator.StringToHash("IsMoving");
+    private PlayerAnimations _playerAnimations;
     private PlayerActions _actions;
     private Rigidbody2D _rb2D;
-    private Animator _animator;
     private Vector2 _moveDirection;
+
     private void Awake()
     {
         _actions = new PlayerActions();
-        _animator = GetComponent<Animator>();
         _rb2D = GetComponent<Rigidbody2D>();
+        _playerAnimations = GetComponent<PlayerAnimations>();
+        
     }
 
     private void Update()
@@ -42,13 +41,12 @@ public class PlayerMovement : MonoBehaviour
         _moveDirection = _actions.Movement.Move.ReadValue<Vector2>().normalized;
         if (_moveDirection == Vector2.zero)
         {
-            _animator.SetBool(_moving, false);
+            _playerAnimations.SetMoveBoolTransition(false);
             return;
         }
         
-        _animator.SetBool(_moving, true);
-        _animator.SetFloat(_moveX, _moveDirection.x);
-        _animator.SetFloat(_moveY, _moveDirection.y);
+        _playerAnimations.SetMoveBoolTransition(true);
+        _playerAnimations.SetMoveAnimation(_moveDirection);
     }
 
     private void OnEnable()

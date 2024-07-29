@@ -9,6 +9,13 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [SerializeField] 
     private PlayerStats stats;
 
+    private PlayerAnimations _playerAnimations;
+
+    private void Awake()
+    {
+        _playerAnimations = GetComponent<PlayerAnimations>();
+    }
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -28,6 +35,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void PlayerDead()
     {
-        Debug.Log("Dead");
+        _playerAnimations.SetDeadAnimation();
     }
 }
